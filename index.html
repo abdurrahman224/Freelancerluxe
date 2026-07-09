@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/bg.png" />
+    <!-- Preload most-critical hero images to prioritize fetching -->
+    <link rel="preload" as="image" href="/darkcorner.png">
+    <link rel="preload" as="image" href="/bg.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YOUKNOWBALL</title>
+  </head>
+  <body>
+    <!-- Immediately apply dark classes from localStorage to avoid flash of wrong theme -->
+    <script>
+      (function () {
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('theme-dark', 'dark');
+        }
+      })();
+    </script>
+    <!-- Prefetch non-critical images when the browser is idle to avoid blocking render -->
+    <script>
+      (function prefetchImages() {
+        const imgs = [
+          '/topImage.png',
+          '/topImageBlack.png',
+          '/cards/target.png',
+          '/cards/diamond.png',
+          '/cards/counting.png'
+        ];
+        function load() {
+          imgs.forEach(src => { const i = new Image(); i.src = src; });
+        }
+        if ('requestIdleCallback' in window) requestIdleCallback(load, { timeout: 2000 });
+        else window.addEventListener('load', load);
+      })();
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
